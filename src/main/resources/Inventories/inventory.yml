@@ -1,0 +1,24 @@
+InventorySettings:
+  Type: blacklist
+  # UUID only
+  List:
+    - "73548558-7aa4-4cd5-9468-22bd9756187e"
+    - "30a4a162-815d-4ff6-bc77-ab7d1294bf1d"
+Components:
+  1:
+    Type: button
+    Attributes:
+      Slot: 15
+      Item:
+        Type: Diamond_sword
+        Name: "<green>Press for help"
+        Lore:
+          - "<red>hello"
+          - "<blue>world!"
+        CustomModelData: "104"
+      Locked: true
+      OnInteraction:
+        Commands:
+          - "help"
+        Messages:
+          - "here's some help!"

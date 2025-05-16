@@ -1,0 +1,5 @@
+PluginInfo:
+  Version: 1.0
+  FirstStart: true
+  Inventory: inventory.yml
+  Language: EN_en.yml
