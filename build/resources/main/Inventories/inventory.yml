@@ -10,12 +10,12 @@ Components:
     Attributes:
       Slot: 15
       Item:
-        Type: Diamond_sword
+        Type: Barrier
         Name: "<green>Press for help"
         Lore:
           - "<red>hello"
           - "<blue>world!"
-        CustomModelData: "104"
+        CustomModelData: 104
       Locked: true
       OnInteraction:
         Commands:

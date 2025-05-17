@@ -1,0 +1,12 @@
+Commands:
+  Help:
+    - "[<blue>StarInventory<white>] Heres a list of the current commads that the plugin has:"
+    - "/reload"
+    - "└ usage: /sinv reload or /sinv reload <file>"
+    - "└ explanation: it reloads all of the file or just some"
+    - "/applychanges"
+    - "└ usage /sinv apply"
+    - "└ explanation: it applies to the players the changes made in the inventory file"
+  Reload: "[<blue>StarInventory<white>] Reloaded all of the files"
+  ReloadSpecific: "[<blue>StarInventory<white>] Reloaded file: %file%"
+  ApplyChanges: "[<blue>StarInventory<white>] applied all the changes in the config!"

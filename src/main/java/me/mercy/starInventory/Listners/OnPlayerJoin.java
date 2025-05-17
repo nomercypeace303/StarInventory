@@ -1,6 +1,6 @@
 package me.mercy.starInventory.Listners;
 
-import me.mercy.starInventory.Files.InventoryHandler;
+import me.mercy.starInventory.Files.ConfigHandler;
 import me.mercy.starInventory.Files.YmlHandler;
 import me.mercy.starInventory.Items.ItemHandler;
 import me.mercy.starInventory.StarInventory;
@@ -15,17 +15,10 @@ import java.util.Objects;
 
 public class OnPlayerJoin implements org.bukkit.event.Listener {
     private final Plugin plugin = StarInventory.getMain();
-    private final InventoryHandler inventory = StarInventory.getInventoryHandler();
+    public static ConfigHandler inventory = StarInventory.getinventoryFile();
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        String inventoryFilePath = plugin.getDataFolder().getPath() + "/Inventories/" + new YmlHandler(plugin.getDataFolder().getPath() + "/config.yml").getSection("PluginInfo").getString("Inventory");
-        plugin.getLogger().info("Loading inventory from: " + inventoryFilePath);
-
-        Player player = event.getPlayer();
-
+    public void setter(Player player){
         ConfigurationSection components = inventory.getSection("Components");
-
         if (inventory.isLoaded){
             components.getKeys(false).forEach(key -> {
                 if ((Objects.requireNonNull(Objects.requireNonNull(components.getConfigurationSection(key)).getString("Type"))).equalsIgnoreCase("Button")){
@@ -36,6 +29,16 @@ public class OnPlayerJoin implements org.bukkit.event.Listener {
 
             });
         }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        String inventoryFilePath = plugin.getDataFolder().getPath() + "/Inventories/" + new YmlHandler(plugin.getDataFolder().getPath() + "/config.yml").getSection("PluginInfo").getString("Inventory");
+        plugin.getLogger().info("Loading inventory from: " + inventoryFilePath);
+
+        Player player = event.getPlayer();
+
+        setter(player);
     }
 
 
