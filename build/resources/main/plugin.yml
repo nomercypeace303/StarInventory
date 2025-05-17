@@ -1,0 +1,4 @@
+name: StarInventory
+version: '1.0'
+main: me.mercy.starInventory.StarInventory
+api-version: '1.21'

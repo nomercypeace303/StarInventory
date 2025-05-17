@@ -20,17 +20,17 @@ public class YmlHandler {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public YmlHandler(String filePath) {
-        String path = plugin.getDataFolder().getPath() + "/" + filePath;
-        this.file = new File(path);
+        this.file = new File(filePath);
 
         try {
             // Crea file e cartelle se non esistono
             if (!this.file.exists()) {
+                plugin.getLogger().info("Creating file: " + filePath);
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
         } catch (IOException e) {
-            plugin.getLogger().severe("An error occured upon creating: " + path);
+            plugin.getLogger().severe("An error occured upon creating: " + filePath);
             plugin.getLogger().severe(e.toString());
         }
 
@@ -59,21 +59,8 @@ public class YmlHandler {
 
     public void copyDefaults(String jarpath) {
         // Carica la versione "di default" dal jar (resources)
-        InputStream defaultConfigStream = plugin.getResource(jarpath);
-        if (defaultConfigStream == null) {
-            plugin.getLogger().warning("Default resource not found: " + file.getName() + ", path: " + jarpath);
-            return;
-        }
-
-        // Carica quel file come YamlConfiguration
-        FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream));
-
-        // Imposta i default nel file effettivo
-        fileConfiguration.setDefaults(defaultConfig);
-        fileConfiguration.options().copyDefaults(true);
-
-        // Salva i cambiamenti nel file fisico
-        save();
+        plugin.getLogger().info("Copying default config from jar: " + jarpath);
+        plugin.saveResource(jarpath, true);
     }
 
     public ConfigurationSection getSection(String inFilePath) {

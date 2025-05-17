@@ -9,12 +9,14 @@ public class InventoryHandler {
     private final Plugin plugin = StarInventory.getMain();
     private String inventoryPath= "";
     private YmlHandler inventory;
+    public boolean isLoaded = false;
 
 
     public void loadInventory() {
         if (!(plugin.getConfig().getString("PluginInfo.Inventory") == null)) {
             inventoryPath = plugin.getConfig().getString("PluginInfo.Inventory");
             inventory = new YmlHandler(plugin.getDataFolder().getPath() + "/Inventories/" + inventoryPath);
+            isLoaded = true;
         } else {
             plugin.getLogger().severe("The inventory path is not set in the config file!");
         }
@@ -31,7 +33,11 @@ public class InventoryHandler {
     }
 
     public ConfigurationSection getSection(String inFilePath) {
-        inventory.getSection(inFilePath);
+        if(inventory.getSection(inFilePath)==null){
+            plugin.getLogger().severe("The section " + inFilePath + " does not exist in the file: " + inventoryPath);
+        } else {
+            inventory.getSection(inFilePath);
+        }
         return null;
     }
 

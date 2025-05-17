@@ -146,7 +146,7 @@ public class ItemHandler {
         return this;
     }
 
-    public ItemStack BuildItem() {
+    public ItemStack buildItem() {
         return itemStack;
     }
 
@@ -157,6 +157,6 @@ public class ItemHandler {
                 .addFlags()
                 .setGlow()
                 .setNBT()
-                .BuildItem();
+                .buildItem();
     }
 }
