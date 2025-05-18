@@ -8,8 +8,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class YmlHandler {
 
@@ -38,14 +36,14 @@ public class YmlHandler {
         this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
-    public void save() {
-        try {
-            fileConfiguration.save(file);
-        } catch (IOException e) {
-            plugin.getLogger().severe("An error occured upon saving: " + file.getPath());
-            plugin.getLogger().severe(e.toString());
-        }
-    }
+    //public void save() {
+    //    try {
+    //        fileConfiguration.save(file);
+    //    } catch (IOException e) {
+    //       plugin.getLogger().severe("An error occured upon saving: " + file.getPath());
+    //        plugin.getLogger().severe(e.toString());
+    //    }
+    //}
 
     public void reload() {
         String path = file.getPath();

@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 public class ConfigHandler {
 
     private final Plugin plugin = StarInventory.getMain();
-    private String configPath = "";
+    private final String configPath ;
     private YmlHandler config;
     public boolean isLoaded = false;
 
@@ -21,10 +21,10 @@ public class ConfigHandler {
         isLoaded = true;
     }
 
-    public void saveconfig() {
-        config.save();
-        plugin.getLogger().info("The config " + configPath + " has been saved!");
-    }
+    //public void saveconfig() {
+    //    config.save();
+    //    plugin.getLogger().info("The config " + configPath + " has been saved!");
+    //}
 
     public void reloadconfig() {
         config.reload();

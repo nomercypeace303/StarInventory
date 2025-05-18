@@ -2,7 +2,6 @@
 package me.mercy.starInventory.Commands;
 
 import me.mercy.starInventory.Files.ConfigHandler;
-import me.mercy.starInventory.Listners.Listeners;
 import me.mercy.starInventory.StarInventory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,7 +42,6 @@ public class Commands implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("applychanges")) {
-            Listeners listeners = new Listeners();
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 StarInventory.getInventoryHandler().setInventory(player);
             }
@@ -75,14 +73,12 @@ public class Commands implements CommandExecutor, TabCompleter {
                 cmdUtils.sendMessage(commandSender, message);
             }
             if (args[1].equalsIgnoreCase("all") && args[0].equalsIgnoreCase("applychanges")) {
-                Listeners listeners = new Listeners();
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
                     StarInventory.getInventoryHandler().setInventory(player);
                 }
                 cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
             }
             if (args[1].equalsIgnoreCase("self") && args[0].equalsIgnoreCase("applychanges") && commandSender instanceof Player player) {
-                Listeners listeners = new Listeners();
                 StarInventory.getInventoryHandler().setInventory(player);
                 cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
             }
@@ -93,7 +89,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
 
         if (args.length == 1) {
             return List.of("reload", "applychanges");

@@ -1,11 +1,9 @@
 package me.mercy.starInventory.Handlers;
 
-import me.mercy.starInventory.Files.ConfigHandler;
 import me.mercy.starInventory.Items.ItemHandler;
 import me.mercy.starInventory.StarInventory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -31,7 +29,7 @@ public class InventoryHandler {
                     inventoryItems.add(itemHandler.autoBuildItem());
                     if(StarInventory.getinventoryFile().getSection("Components."+key+".Attributes").getBoolean("Locked", true)){
                         blockedSlots.add(slot);
-                    };
+                    }
                 }
             });
         }
