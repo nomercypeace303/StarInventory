@@ -3,7 +3,8 @@ package me.mercy.starInventory;
 import me.mercy.starInventory.Commands.Commands;
 import me.mercy.starInventory.Files.ConfigHandler;
 import me.mercy.starInventory.Files.YmlHandler;
-import me.mercy.starInventory.Listners.OnPlayerJoin;
+import me.mercy.starInventory.Handlers.InventoryHandler;
+import me.mercy.starInventory.Listners.Listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class StarInventory extends JavaPlugin {
     private static StarInventory main;
     public static ConfigHandler inventoryFile;
     public static ConfigHandler languageFile;
+    private static InventoryHandler inventoryHandler;
 
     private void firstLoad() {
         /*
@@ -32,6 +34,7 @@ public final class StarInventory extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         main = this;
+        inventoryHandler = new InventoryHandler();
 
         /*
          *
@@ -58,7 +61,9 @@ public final class StarInventory extends JavaPlugin {
         languageFile = new ConfigHandler("/Languages/" + getConfig().getString("PluginInfo.Language"));
         languageFile.loadconfig();
 
-        Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(), this);
+
+
+        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         Objects.requireNonNull(getCommand("starinventory")).setExecutor(new Commands());
 
     }
@@ -78,5 +83,9 @@ public final class StarInventory extends JavaPlugin {
 
     public static ConfigHandler getLanguageFile() {
         return languageFile;
+    }
+
+    public static InventoryHandler getInventoryHandler() {
+        return inventoryHandler;
     }
 }

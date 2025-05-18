@@ -2,7 +2,7 @@
 package me.mercy.starInventory.Commands;
 
 import me.mercy.starInventory.Files.ConfigHandler;
-import me.mercy.starInventory.Listners.OnPlayerJoin;
+import me.mercy.starInventory.Listners.Listeners;
 import me.mercy.starInventory.StarInventory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +23,6 @@ public class Commands implements CommandExecutor, TabCompleter {
 
     private final Plugin plugin = StarInventory.getMain();
     private final CommandsUtils cmdUtils = new CommandsUtils();
-    private final ConfigHandler inventoryFile = StarInventory.getinventoryFile();
     private final ConfigHandler languageFile = StarInventory.getLanguageFile();
 
     @Override
@@ -36,25 +35,24 @@ public class Commands implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            inventoryFile.reloadconfig();
+            StarInventory.getInventoryHandler().reloadInventory();
+            StarInventory.languageFile.reloadconfig();
             languageFile.reloadconfig();
             cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("Reload"));
 
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("applychanges")) {
-            OnPlayerJoin onPlayerJoin = new OnPlayerJoin();
-            for (Player player : plugin.getServer().getOnlinePlayers()){
-                onPlayerJoin.setter(player);
+            Listeners listeners = new Listeners();
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                StarInventory.getInventoryHandler().setInventory(player);
             }
             cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
         }
 
         if (args.length == 2) {
             if (args[1].equalsIgnoreCase("inventory") && args[0].equalsIgnoreCase("reload")) {
-                StarInventory.inventoryFile.reloadconfig();
-                OnPlayerJoin.inventory.reloadconfig();
-                OnPlayerJoin.blockedSlots.clear();
+                StarInventory.getInventoryHandler().reloadInventory();
                 Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("%file%", "inventory");
                 String message = cmdUtils.replacePlaceholders(Objects.requireNonNull(languageFile.getSection("Commands").getString("ReloadSpecific")), placeholders);
@@ -77,15 +75,15 @@ public class Commands implements CommandExecutor, TabCompleter {
                 cmdUtils.sendMessage(commandSender, message);
             }
             if (args[1].equalsIgnoreCase("all") && args[0].equalsIgnoreCase("applychanges")) {
-                OnPlayerJoin onPlayerJoin = new OnPlayerJoin();
-                for (Player player : plugin.getServer().getOnlinePlayers()){
-                    onPlayerJoin.setter(player);
+                Listeners listeners = new Listeners();
+                for (Player player : plugin.getServer().getOnlinePlayers()) {
+                    StarInventory.getInventoryHandler().setInventory(player);
                 }
                 cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
             }
             if (args[1].equalsIgnoreCase("self") && args[0].equalsIgnoreCase("applychanges") && commandSender instanceof Player player) {
-                OnPlayerJoin onPlayerJoin = new OnPlayerJoin();
-                onPlayerJoin.setter(player);
+                Listeners listeners = new Listeners();
+                StarInventory.getInventoryHandler().setInventory(player);
                 cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
             }
 
