@@ -20,5 +20,5 @@ Components:
       OnInteraction:
         Commands:
           - "help"
-        Messages:
+        Messages: 
           - "here's some help!"

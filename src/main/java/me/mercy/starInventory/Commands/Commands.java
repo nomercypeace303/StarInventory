@@ -54,6 +54,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             if (args[1].equalsIgnoreCase("inventory") && args[0].equalsIgnoreCase("reload")) {
                 StarInventory.inventoryFile.reloadconfig();
                 OnPlayerJoin.inventory.reloadconfig();
+                OnPlayerJoin.blockedSlots.clear();
                 Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("%file%", "inventory");
                 String message = cmdUtils.replacePlaceholders(Objects.requireNonNull(languageFile.getSection("Commands").getString("ReloadSpecific")), placeholders);
