@@ -3,10 +3,12 @@ package me.mercy.starInventory.Listners;
 import me.mercy.starInventory.Files.YmlHandler;
 import me.mercy.starInventory.Handlers.InventoryHandler;
 import me.mercy.starInventory.StarInventory;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -40,13 +42,16 @@ public class Listeners implements org.bukkit.event.Listener {
 
     @EventHandler
     public void inventoryClickEvent(InventoryClickEvent event) {
+        if (event.getSlot() < 0) return;
+
         Player player = (Player)event.getWhoClicked();
-        ItemStack item = player.getInventory().getItem(event.getSlot());
+        ItemStack item = player.getOpenInventory().getBottomInventory().getItem(event.getSlot());
+
 
         if (item == null) return;
         if (InventoryHandler.blockedSlots.isEmpty()) return;
         for (Integer slot : InventoryHandler.blockedSlots){
-            if (slot == event.getSlot()){
+            if (slot == event.getRawSlot()){
                 event.setCancelled(true);
                 return;
             }

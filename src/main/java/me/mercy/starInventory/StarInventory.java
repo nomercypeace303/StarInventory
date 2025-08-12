@@ -19,13 +19,15 @@ public final class StarInventory extends JavaPlugin {
 
     private void firstLoad() {
         /*
+         *
          *   firstLoad logic, loads all the default files and directories
+         *
          * */
 
         YmlHandler defaultInventory = new YmlHandler(main.getDataFolder().getPath() + "/Inventories/inventory.yml");
         defaultInventory.copyDefaults("Inventories/inventory.yml");
         YmlHandler defaultLanguage = new YmlHandler(main.getDataFolder().getPath() + "/Languages/EN_en.yml");
-        defaultInventory.copyDefaults("Languages/EN_en.yml");
+        defaultLanguage.copyDefaults("Languages/EN_en.yml");
 
     }
 
