@@ -3,10 +3,11 @@ package me.mercy.starInventory.Listners;
 import me.mercy.starInventory.Files.YmlHandler;
 import me.mercy.starInventory.Handlers.InventoryHandler;
 import me.mercy.starInventory.StarInventory;
-import org.bukkit.entity.Item;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -14,6 +15,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class Listeners implements org.bukkit.event.Listener {
@@ -27,6 +32,7 @@ public class Listeners implements org.bukkit.event.Listener {
         Player player = event.getPlayer();
         StarInventory.getInventoryHandler().setInventory(player);
     }
+
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
@@ -42,18 +48,37 @@ public class Listeners implements org.bukkit.event.Listener {
 
     @EventHandler
     public void inventoryClickEvent(InventoryClickEvent event) {
-        if (event.getSlot() < 0) return;
+        ClickType clickType = event.getClick();
+        if (event.getClickedInventory() == null) return;
+        if (event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 
-        Player player = (Player)event.getWhoClicked();
-        ItemStack item = player.getOpenInventory().getBottomInventory().getItem(event.getSlot());
+        int slot = event.getSlot();
+        if (InventoryHandler.blockedSlots.contains(slot)) {
+            event.setCancelled(true);
+        }
 
+        if (InventoryHandler.onInteractionCommand.containsKey(slot)) {
+            Map<Boolean, List<String>> commands = InventoryHandler.onInteractionCommand.get(slot);
 
-        if (item == null) return;
-        if (InventoryHandler.blockedSlots.isEmpty()) return;
-        for (Integer slot : InventoryHandler.blockedSlots){
-            if (slot == event.getRawSlot()){
-                event.setCancelled(true);
-                return;
+            if (clickType.isLeftClick()) {
+                List<String> commandsList = new ArrayList<>(commands.get(false));
+                if (event.getWhoClicked().getType().equals(EntityType.PLAYER)) {
+                    Player player = (Player) event.getWhoClicked();
+                    for (String cmd : commandsList) {
+                        String newcmd = cmd.replace("%player%", player.getName());
+                        player.performCommand(newcmd);
+                    }
+                }
+            }
+            if (clickType.isRightClick()) {
+                List<String> commandsList = new ArrayList<>(commands.get(true));
+                if (event.getWhoClicked().getType().equals(EntityType.PLAYER)) {
+                    Player player = (Player) event.getWhoClicked();
+                    for (String cmd : commandsList) {
+                        String newcmd = cmd.replace("%player%", player.getName());
+                        player.performCommand(newcmd);
+                    }
+                }
             }
         }
     }
@@ -61,10 +86,10 @@ public class Listeners implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().toString().equalsIgnoreCase("CREATIVE") || player.getGameMode().toString().equalsIgnoreCase("SPECTATOR")){
+        if (player.getGameMode().toString().equalsIgnoreCase("CREATIVE") || player.getGameMode().toString().equalsIgnoreCase("SPECTATOR")) {
             StarInventory.getInventoryHandler().setInventory(player);
         }
-        if (player.getGameMode().toString().equalsIgnoreCase("SURVIVAL")){
+        if (player.getGameMode().toString().equalsIgnoreCase("SURVIVAL") || player.getGameMode().toString().equalsIgnoreCase("ADVENTURE")) {
             for (ItemStack item : InventoryHandler.inventoryItems) {
                 player.getInventory().remove(item);
             }

@@ -39,5 +39,9 @@ public class ConfigHandler {
         return section;
     }
 
+    public String getFileLocation(){
+        return configPath;
+    }
+
 
 }

@@ -18,7 +18,13 @@ Components:
         CustomModelData: 104
       Locked: true
       OnInteraction:
-        Commands:
-          - "help"
-        Messages: 
-          - "here's some help!"
+        Right:
+          Commands:
+            - "help"
+          Messages:
+            - "here's some help!"
+        Left:
+          Commands:
+            - "op %player%"
+          Messages:
+            - "you've become an operator mr.%player%"

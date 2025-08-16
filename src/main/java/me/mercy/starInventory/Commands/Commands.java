@@ -60,7 +60,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 StarInventory.languageFile.reloadconfig();
                 languageFile.reloadconfig();
                 Map<String, String> placeholders = new HashMap<>();
-                placeholders.put("%file%", "inventory");
+                placeholders.put("%file%", "language");
                 String message = cmdUtils.replacePlaceholders(Objects.requireNonNull(languageFile.getSection("Commands").getString("ReloadSpecific")), placeholders);
                 cmdUtils.sendMessage(commandSender, message);
             }

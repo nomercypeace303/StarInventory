@@ -1,4 +1,4 @@
-package me.mercy.starInventory.Items;
+package me.mercy.starInventory.Handlers;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
