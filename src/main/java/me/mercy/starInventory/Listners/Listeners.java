@@ -6,6 +6,7 @@ import me.mercy.starInventory.StarInventory;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,11 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 
-public class Listeners implements org.bukkit.event.Listener {
+public class Listeners implements Listener {
     private final Plugin plugin = StarInventory.getMain();
 
     @EventHandler
@@ -46,6 +48,7 @@ public class Listeners implements org.bukkit.event.Listener {
         );
     }
 
+/*
     @EventHandler
     public void inventoryClickEvent(InventoryClickEvent event) {
         ClickType clickType = event.getClick();
@@ -53,35 +56,34 @@ public class Listeners implements org.bukkit.event.Listener {
         if (event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 
         int slot = event.getSlot();
+
+        // blocco slot
         if (InventoryHandler.blockedSlots.contains(slot)) {
             event.setCancelled(true);
         }
 
+        // comandi sugli slot
         if (InventoryHandler.onInteractionCommand.containsKey(slot)) {
             Map<Boolean, List<String>> commands = InventoryHandler.onInteractionCommand.get(slot);
 
-            if (clickType.isLeftClick()) {
-                List<String> commandsList = new ArrayList<>(commands.get(false));
-                if (event.getWhoClicked().getType().equals(EntityType.PLAYER)) {
-                    Player player = (Player) event.getWhoClicked();
-                    for (String cmd : commandsList) {
-                        String newcmd = cmd.replace("%player%", player.getName());
-                        player.performCommand(newcmd);
-                    }
+            if (!commands.isEmpty() && event.getWhoClicked() instanceof Player player) {
+                List<String> commandsList = null;
+
+                if (clickType.isLeftClick()) {
+                    commandsList = commands.getOrDefault(false, Collections.emptyList());
+                } else if (clickType.isRightClick()) {
+                    commandsList = commands.getOrDefault(true, Collections.emptyList());
                 }
-            }
-            if (clickType.isRightClick()) {
-                List<String> commandsList = new ArrayList<>(commands.get(true));
-                if (event.getWhoClicked().getType().equals(EntityType.PLAYER)) {
-                    Player player = (Player) event.getWhoClicked();
+
+                if (commandsList != null && !commandsList.isEmpty()) {
                     for (String cmd : commandsList) {
-                        String newcmd = cmd.replace("%player%", player.getName());
-                        player.performCommand(newcmd);
+                        player.performCommand(cmd.replace("%player%", player.getName()));
                     }
                 }
             }
         }
     }
+*/
 
     @EventHandler
     public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {

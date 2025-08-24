@@ -27,12 +27,14 @@ public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
 
+        //help command
         if (args.length == 0) {
             for (String line : languageFile.getSection("Commands").getStringList("Help")) {
                 cmdUtils.sendMessage(commandSender, line);
             }
         }
 
+        //reload command
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             StarInventory.getInventoryHandler().reloadInventory();
             StarInventory.languageFile.reloadconfig();
@@ -40,14 +42,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("Reload"));
 
         }
-
-        if (args.length == 1 && args[0].equalsIgnoreCase("applychanges")) {
-            for (Player player : plugin.getServer().getOnlinePlayers()) {
-                StarInventory.getInventoryHandler().setInventory(player);
-            }
-            cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
-        }
-
         if (args.length == 2) {
             if (args[1].equalsIgnoreCase("inventory") && args[0].equalsIgnoreCase("reload")) {
                 StarInventory.getInventoryHandler().reloadInventory();
@@ -72,18 +66,28 @@ public class Commands implements CommandExecutor, TabCompleter {
                 String message = cmdUtils.replacePlaceholders(Objects.requireNonNull(languageFile.getSection("Commands").getString("ReloadSpecific")), placeholders);
                 cmdUtils.sendMessage(commandSender, message);
             }
-            if (args[1].equalsIgnoreCase("all") && args[0].equalsIgnoreCase("applychanges")) {
-                for (Player player : plugin.getServer().getOnlinePlayers()) {
-                    StarInventory.getInventoryHandler().setInventory(player);
-                }
-                cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
-            }
-            if (args[1].equalsIgnoreCase("self") && args[0].equalsIgnoreCase("applychanges") && commandSender instanceof Player player) {
-                StarInventory.getInventoryHandler().setInventory(player);
-                cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
-            }
 
         }
+
+        //applychanges command
+        if (args.length == 1 && args[0].equalsIgnoreCase("applychanges")) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                StarInventory.getInventoryHandler().setInventory(player);
+            }
+            cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
+        }
+        if (args[1].equalsIgnoreCase("all") && args[0].equalsIgnoreCase("applychanges")) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                StarInventory.getInventoryHandler().setInventory(player);
+            }
+            cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
+        }
+        if (args[1].equalsIgnoreCase("self") && args[0].equalsIgnoreCase("applychanges") && commandSender instanceof Player player) {
+            StarInventory.getInventoryHandler().setInventory(player);
+            cmdUtils.sendMessage(commandSender, languageFile.getSection("Commands").getString("ApplyChanges"));
+        }
+
+
 
         return false;
     }

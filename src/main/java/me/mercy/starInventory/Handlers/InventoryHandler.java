@@ -18,6 +18,7 @@ public class InventoryHandler {
 
     public void setInventory(Player player) {
         ConfigurationSection components = StarInventory.getinventoryFile().getSection("Components");
+        plugin.getLogger().info("Loading inventory for: " + player.getName());
         if (StarInventory.getinventoryFile().isLoaded) {
             components.getKeys(false).forEach(key -> {
                 if ((Objects.requireNonNull(Objects.requireNonNull(components.getConfigurationSection(key)).getString("Type"))).equalsIgnoreCase("Button")) {
@@ -43,14 +44,12 @@ public class InventoryHandler {
                                 plugin.getLogger().severe("Configuration error in the file: "
                                         + StarInventory.inventoryFile.getFileLocation() + " component number: " + key);
                             } else {
-                                plugin.getLogger().info("Loading item n." + key + "'s commands (Right)");
                                 onInteractionCommand
                                         .computeIfAbsent(slot, s -> new HashMap<>())
                                         .merge(true, new ArrayList<>(commands), (oldList, newList) -> {
                                             oldList.addAll(newList);
                                             return oldList;
                                         });
-                                plugin.getLogger().info("Loaded successfully item n." + key + "'s commands (Right)");
                             }
                         }
 
@@ -61,14 +60,12 @@ public class InventoryHandler {
                                 plugin.getLogger().severe("Configuration error in the file: "
                                         + StarInventory.inventoryFile.getFileLocation() + " component number: " + key);
                             } else {
-                                plugin.getLogger().info("Loading item n." + key + "'s commands (Left)");
                                 onInteractionCommand
                                         .computeIfAbsent(slot, s -> new HashMap<>())
                                         .merge(false, new ArrayList<>(commands), (oldList, newList) -> {
                                             oldList.addAll(newList);
                                             return oldList;
                                         });
-                                plugin.getLogger().info("Loaded successfully item n." + key + "'s commands (Left)");
                             }
                         }
                     }

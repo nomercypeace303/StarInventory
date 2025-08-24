@@ -5,6 +5,7 @@ import me.mercy.starInventory.Files.ConfigHandler;
 import me.mercy.starInventory.Files.YmlHandler;
 import me.mercy.starInventory.Handlers.InventoryHandler;
 import me.mercy.starInventory.Listners.Listeners;
+import me.mercy.starInventory.Listners.InventoryClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -66,6 +67,7 @@ public final class StarInventory extends JavaPlugin {
 
 
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryClickEvent(), this);
         Objects.requireNonNull(getCommand("starinventory")).setExecutor(new Commands());
 
     }
